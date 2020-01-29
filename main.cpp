@@ -3,6 +3,6 @@ using namespace std;
 
 int main() {
     Arvore oi;
-    //oi.salva();
+    oi.jogo();
     return 0;
 }
