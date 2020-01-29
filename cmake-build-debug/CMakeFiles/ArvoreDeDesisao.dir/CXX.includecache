@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/media/djalma/09BBDA931A86D9AA/paradas_de_algoritmo/Brincadeiras_Semestre_1_2020/ArvoreDeDesisao/Arvore.cpp
+Arvore.h
+/media/djalma/09BBDA931A86D9AA/paradas_de_algoritmo/Brincadeiras_Semestre_1_2020/ArvoreDeDesisao/Arvore.h
+
+/media/djalma/09BBDA931A86D9AA/paradas_de_algoritmo/Brincadeiras_Semestre_1_2020/ArvoreDeDesisao/Arvore.h
+iostream
+-
+
+/media/djalma/09BBDA931A86D9AA/paradas_de_algoritmo/Brincadeiras_Semestre_1_2020/ArvoreDeDesisao/main.cpp
+Arvore.h
+/media/djalma/09BBDA931A86D9AA/paradas_de_algoritmo/Brincadeiras_Semestre_1_2020/ArvoreDeDesisao/Arvore.h
+

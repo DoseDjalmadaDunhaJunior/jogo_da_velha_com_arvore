@@ -1,0 +1,1 @@
+/usr/bin/g++  -g   CMakeFiles/ArvoreDeDesisao.dir/main.cpp.o CMakeFiles/ArvoreDeDesisao.dir/Arvore.cpp.o  -o ArvoreDeDesisao 

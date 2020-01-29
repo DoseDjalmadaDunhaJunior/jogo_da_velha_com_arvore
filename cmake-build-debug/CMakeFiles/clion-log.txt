@@ -1,0 +1,4 @@
+/snap/clion/100/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=/usr/bin/g++ -G "CodeBlocks - Unix Makefiles" /media/djalma/09BBDA931A86D9AA/paradas_de_algoritmo/Brincadeiras_Semestre_1_2020/ArvoreDeDesisao
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /media/djalma/09BBDA931A86D9AA/paradas_de_algoritmo/Brincadeiras_Semestre_1_2020/ArvoreDeDesisao/cmake-build-debug
