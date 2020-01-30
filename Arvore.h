@@ -40,6 +40,7 @@ public:
                         cin>>po;
                         erro = popula(po,2);
                     }
+                    salva(po,2);
                 }
             }
             //vez do computador
@@ -49,10 +50,11 @@ public:
                     while(erro != 0){
                         int ver = aleatorio(65,73);
                         po = intToChar(ver);
+
                         erro = popula(po,1);
                     }
+                    salva(po,1);
                 }
-
             }
             cout << "===========================" << endl;
             a = confereJogo();
@@ -156,19 +158,31 @@ private:
 
     //salva é para salvar o aprendizado do sistema
     void salva(char po, int jogador) {
+        cout<<caminho<<endl;
         if (po >= 'a' && po <= 'z') {
             po = po - ('a' - 'A');
         }
         char nome[5];
         char copia[1000];
+        char copia2[1000];
         zeraVet(nome,5);
         zeraVet(copia,1000);
+        zeraVet(copia2,1000);
         nome[0] = po;
-        nome[1] = intToChar(jogador);
-
+        nome[1] = intToPchar(jogador);
         strcat(copia,"cd ");
         strcat(copia,caminho);
-
+        strcat(copia, "/");
+        strcat(copia,nome);
+        if((system(copia)) != 0){
+            strcat(copia2,"mkdir ");
+            strcat(copia2, caminho);
+            strcat(copia2, "/");
+            strcat(copia2,nome);
+            system(copia2);
+            strcat(caminho,"/");
+            strcat(caminho,nome);
+        }
     }
 
     //uma garantia, para caso não exista um banco de dados ele cria um vazio, e caso exista não faz nada
@@ -261,6 +275,11 @@ private:
 
     //converte int para char
     char intToChar(int num){
+        return num;
+    }
+
+    //converte int para char valores pequenos
+    char intToPchar(int num){
         return (num + '0');
     }
 
