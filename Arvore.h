@@ -5,6 +5,7 @@
 #ifndef ARVOREDEDESISAO_ARVORE_H
 #define ARVOREDEDESISAO_ARVORE_H
 #include <cstdlib>
+#include <cstring>
 #include <ctime>
 #include <iostream>
 using namespace std;
@@ -13,15 +14,7 @@ class Arvore {
 public:
     Arvore(){
         zera();
-        FILE *arq;
-        char txt[10];
         existe();
-        arq = fopen("velha", "r");
-        //fprintf(arq, "%s", "oi");
-        fscanf(arq,"%s", txt);
-        //cout<<"salvou"<<endl;
-        cout<<txt<<endl;
-        fclose(arq);
     }
 
     // a logica do jogo esta aqui
@@ -87,6 +80,8 @@ private:
 
     //lugares ainda disponiveis para jogar
     int sobram = 9;
+
+    char caminho[1000];
 
     /* a função aleatorio faz exatamente o que diz no nome, porem a faixa de valores possiveis começa num valor
      * estipulado e vai até onde pode ser mais viavel para a função*/
@@ -155,31 +150,34 @@ private:
         tab[2][1].po = 'H';
         tab[2][2].conteudo = ' ';
         tab[2][2].po = 'I';
+
+        zeraVet(caminho,1000);
     }
 
     //salva é para salvar o aprendizado do sistema
-    void salva() {
-        FILE *arq;
-        arq = fopen("velha", "w");
-        fprintf(arq, "%s", "oi");
-        cout<<"salvou"<<endl;
-        fclose(arq);
+    void salva(char po, int jogador) {
+        if (po >= 'a' && po <= 'z') {
+            po = po - ('a' - 'A');
+        }
+        char nome[5];
+        char copia[1000];
+        zeraVet(nome,5);
+        zeraVet(copia,1000);
+        nome[0] = po;
+        nome[1] = intToChar(jogador);
+
+        strcat(copia,"cd ");
+        strcat(copia,caminho);
+
     }
 
     //uma garantia, para caso não exista um banco de dados ele cria um vazio, e caso exista não faz nada
     void existe(){
-        FILE* arq;
-        arq = fopen("velha", "r");
-        if(!arq) {
-            FILE* temp;
-            temp = fopen("velha", "w");
-            fprintf(temp, " ");
-            fclose(temp);
+        if((system("cd banco")) != 0){
+            system("mkdir banco");
             introducao();
         }
-        else {
-            fclose(arq);
-        }
+        strcat(caminho,"banco");
     }
 
     /* a função abaixo confere a cada jogada se alguem ganhou, retornando -1 se o computador perder
@@ -263,7 +261,13 @@ private:
 
     //converte int para char
     char intToChar(int num){
-        return num;
+        return (num + '0');
+    }
+
+    void zeraVet(char* vet, int tam){
+        for (int i = 0; i < tam; i++) {
+            vet[i] = 0;
+        }
     }
 
 };
