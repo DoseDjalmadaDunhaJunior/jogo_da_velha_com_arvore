@@ -40,8 +40,8 @@ public:
                         cin>>po;
                         erro = popula(po,2);
                     }
-                    salva(po,2);
                 }
+                salva(po,2, false);
             }
             //vez do computador
             else{
@@ -50,11 +50,10 @@ public:
                     while(erro != 0){
                         int ver = aleatorio(65,73);
                         po = intToChar(ver);
-
                         erro = popula(po,1);
                     }
-                    salva(po,1);
                 }
+                salva(po,1, false);
             }
             cout << "===========================" << endl;
             a = confereJogo();
@@ -62,6 +61,13 @@ public:
         }
         if(a == -1){
             cout<<"Parabens você ganhou"<<endl;
+
+            if((vez-1)%2 == 0){
+                salva(po,2, true);
+            }
+            else{
+                salva(po,1, true);
+            }
         }
         else if(a == 1){
             cout<<"Que pena, vocế perdeu"<<endl;
@@ -156,32 +162,72 @@ private:
         zeraVet(caminho,1000);
     }
 
+    // altera o nome da pasta que faz o computador perder para minusculo, para identificar as perdas
+    void alteraTrecho(char* vet1, char* vet2,char* trecho){
+        int i = 0, j = 0, c = 0;
+        for (i = 0; vet1[i] != 0 ; i++) {
+
+        }
+        strcat(vet2,vet1);
+        for (j; j < i ; j++) {
+            if(j >= (i-2)){
+                vet2[j] = trecho[c];
+                c++;
+            }
+        }
+    }
+
     //salva é para salvar o aprendizado do sistema
-    void salva(char po, int jogador) {
-        cout<<caminho<<endl;
+    void salva(char po, int jogador, bool final) {
+
+        // mv file1 newnamefile1
+        char po2 = po;
         if (po >= 'a' && po <= 'z') {
             po = po - ('a' - 'A');
         }
         char nome[5];
+        char nomeNegado[5];
         char copia[1000];
         char copia2[1000];
-        zeraVet(nome,5);
-        zeraVet(copia,1000);
-        zeraVet(copia2,1000);
+        zeraVet(nome, 5);
+        zeraVet(nomeNegado, 5);
+        zeraVet(copia, 1000);
+        zeraVet(copia2, 1000);
         nome[0] = po;
+        nomeNegado[0] = po2;
         nome[1] = intToPchar(jogador);
-        strcat(copia,"cd ");
-        strcat(copia,caminho);
+        nomeNegado[1] = nome[1];
+        strcat(copia, "cd ");
+        strcat(copia, caminho);
         strcat(copia, "/");
-        strcat(copia,nome);
-        if((system(copia)) != 0){
-            strcat(copia2,"mkdir ");
+        strcat(copia, nome);
+         // esse 1º if grava de uma forma diferente caso o caminho ja tenha feito o computador perder
+        if(final){
+            char muda[1000]; // inicio
+            char novo[1000]; // final
+            zeraVet(muda,1000);
+            zeraVet(novo,1000);
+
+            alteraTrecho(caminho,muda,nomeNegado);
+            printf("%s\n%s\n", caminho,muda);
+
+            strcat(novo,"mv ");
+            strcat(novo, caminho);
+            strcat(novo, " ");
+
+            strcat(novo,muda);
+            cout<<novo<<endl;
+            system(novo);
+        }
+        // esse 2º if só grava caminhos que até então não fizeram perder
+        else if ((system(copia)) != 0) {
+            strcat(copia2, "mkdir ");
             strcat(copia2, caminho);
             strcat(copia2, "/");
-            strcat(copia2,nome);
+            strcat(copia2, nome);
             system(copia2);
-            strcat(caminho,"/");
-            strcat(caminho,nome);
+            strcat(caminho, "/");
+            strcat(caminho, nome);
         }
     }
 
@@ -288,6 +334,7 @@ private:
             vet[i] = 0;
         }
     }
+
 
 };
 
