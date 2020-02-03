@@ -163,40 +163,43 @@ private:
     }
 
     // altera o nome da pasta que faz o computador perder para minusculo, para identificar as perdas
-    void alteraTrecho(char* vet1, char* vet2,char* trecho){
+    void alteraTrecho(char* vet1, char* vet2) {
         int i = 0, j = 0, c = 0;
-        for (i = 0; vet1[i] != 0 ; i++) {
+        for (i = 0; vet1[i] != 0; i++) {
 
         }
-        strcat(vet2,vet1);
-        for (j; j < i ; j++) {
-            if(j >= (i-2)){
-                vet2[j] = trecho[c];
-                c++;
+        strcat(vet2, vet1);
+        for (j; j < i; j++) {
+            if (j >= (i - 5)) {
+                if(c == 0) {
+                    vet2[j] = vet1[j] + ('a' - 'A');
+                    c++;
+                }
+                else if(c == 1){
+                    vet2[j] = vet1[j];
+                    c++;
+                }
+                else{
+                    vet2[j] = 0;
+                }
             }
         }
     }
 
     //salva é para salvar o aprendizado do sistema
     void salva(char po, int jogador, bool final) {
-
-        // mv file1 newnamefile1
         char po2 = po;
         if (po >= 'a' && po <= 'z') {
             po = po - ('a' - 'A');
         }
         char nome[5];
-        char nomeNegado[5];
         char copia[1000];
         char copia2[1000];
         zeraVet(nome, 5);
-        zeraVet(nomeNegado, 5);
         zeraVet(copia, 1000);
         zeraVet(copia2, 1000);
         nome[0] = po;
-        nomeNegado[0] = po2;
         nome[1] = intToPchar(jogador);
-        nomeNegado[1] = nome[1];
         strcat(copia, "cd ");
         strcat(copia, caminho);
         strcat(copia, "/");
@@ -205,19 +208,19 @@ private:
         if(final){
             char muda[1000]; // inicio
             char novo[1000]; // final
+            char deletar[1000];
             zeraVet(muda,1000);
             zeraVet(novo,1000);
-
-            alteraTrecho(caminho,muda,nomeNegado);
-            printf("%s\n%s\n", caminho,muda);
-
+            zeraVet(deletar,1000);
+            alteraTrecho(caminho,muda);
+            strcat(deletar, "rm -rf ");
+            strcat(deletar, caminho);
             strcat(novo,"mv ");
             strcat(novo, caminho);
             strcat(novo, " ");
-
             strcat(novo,muda);
-            cout<<novo<<endl;
             system(novo);
+            system(deletar);
         }
         // esse 2º if só grava caminhos que até então não fizeram perder
         else if ((system(copia)) != 0) {
@@ -269,6 +272,22 @@ private:
         return 0;
     }
 
+    //essa função irá checar no banco se a posição que está tentando ser preenchida não leva a uma derrota
+    bool confereBanco() {
+        int i = 0, j = 0, c = 0;
+        for (i = 0; caminho[i] != 0; i++) {
+
+        }
+        for (j; j < i; j++) {
+            if (j >= (i - 2)) {
+                if (caminho[j] >= 'a' && caminho[j] <= 'z') {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     /*
      * a função abaixo popula a matriz com as jogadas feitas e retorna um valor que quer dizer algo:
      * -1 = computador tentou jogar em uma posição ja ocupada
@@ -276,6 +295,7 @@ private:
      * 1 = computador jogou uma letra invalida
      * 2 = jogador jogou uma letra invalida
      * 0 = ok
+     * 5 = de acordo com o banco essa jogada fará perder
      */
     int popula(char po, int jogador) {
         if (po >= 'a' && po <= 'z') {
@@ -298,7 +318,12 @@ private:
                             return -2;
                         } else {
                             if(jogador == 1){
-                                tab[i][j].conteudo = 'O';
+                                if(confereBanco()){
+                                    return 5;
+                                }
+                                else {
+                                    tab[i][j].conteudo = 'O';
+                                }
                             }
                             else{
                                 tab[i][j].conteudo = 'X';
