@@ -51,6 +51,7 @@ public:
                         int ver = aleatorio(65,73);
                         po = intToChar(ver);
                         erro = popula(po,1);
+                        //printf("==> %i  <==\n", erro);
                     }
                 }
                 salva(po,1, false);
@@ -61,7 +62,6 @@ public:
         }
         if(a == -1){
             cout<<"Parabens você ganhou"<<endl;
-
             if((vez-1)%2 == 0){
                 salva(po,2, true);
             }
@@ -89,7 +89,7 @@ private:
     //lugares ainda disponiveis para jogar
     int sobram = 9;
 
-    char caminho[1000];
+    char caminho[500];
 
     /* a função aleatorio faz exatamente o que diz no nome, porem a faixa de valores possiveis começa num valor
      * estipulado e vai até onde pode ser mais viavel para a função*/
@@ -102,7 +102,6 @@ private:
     //uma introdução rapida para o jogador entender como jogar, só é mostrado a 1ª vez que for jogar
     void introducao(){
         cout<<"=== Vamos jogar ==="<<endl;
-        opcoes();
         cout<<"Para escolher uma posição basta pressionar a letra correspondente\n"
               "ATENÇÃO: cada vez que você jogar mais dificil ficará"<<endl;
     }
@@ -159,7 +158,7 @@ private:
         tab[2][2].conteudo = ' ';
         tab[2][2].po = 'I';
 
-        zeraVet(caminho,1000);
+        zeraVet(caminho,500);
     }
 
     // altera o nome da pasta que faz o computador perder para minusculo, para identificar as perdas
@@ -171,16 +170,15 @@ private:
         strcat(vet2, vet1);
         for (j; j < i; j++) {
             if (j >= (i - 5)) {
-                if(c == 0) {
+                if (c == 0) {
                     vet2[j] = vet1[j] + ('a' - 'A');
                     c++;
-                }
-                else if(c == 1){
+                } else if (c == 1) {
                     vet2[j] = vet1[j];
                     c++;
-                }
-                else{
+                } else {
                     vet2[j] = 0;
+                    vet1[j] = 0;
                 }
             }
         }
@@ -193,11 +191,11 @@ private:
             po = po - ('a' - 'A');
         }
         char nome[5];
-        char copia[1000];
-        char copia2[1000];
+        char copia[500];
+        char copia2[500];
         zeraVet(nome, 5);
-        zeraVet(copia, 1000);
-        zeraVet(copia2, 1000);
+        zeraVet(copia, 500);
+        zeraVet(copia2, 500);
         nome[0] = po;
         nome[1] = intToPchar(jogador);
         strcat(copia, "cd ");
@@ -206,21 +204,16 @@ private:
         strcat(copia, nome);
          // esse 1º if grava de uma forma diferente caso o caminho ja tenha feito o computador perder
         if(final){
-            char muda[1000]; // inicio
-            char novo[1000]; // final
-            char deletar[1000];
-            zeraVet(muda,1000);
-            zeraVet(novo,1000);
-            zeraVet(deletar,1000);
+            char muda[500]; // inicio
+            char novo[500]; // final
+            zeraVet(muda,500);
+            zeraVet(novo,500);
             alteraTrecho(caminho,muda);
-            strcat(deletar, "rm -rf ");
-            strcat(deletar, caminho);
             strcat(novo,"mv ");
             strcat(novo, caminho);
             strcat(novo, " ");
             strcat(novo,muda);
             system(novo);
-            system(deletar);
         }
         // esse 2º if só grava caminhos que até então não fizeram perder
         else if ((system(copia)) != 0) {
@@ -234,13 +227,13 @@ private:
         }
     }
 
-    //uma garantia, para caso não exista um banco de dados ele cria um vazio, e caso exista não faz nada
+    //uma garantia, para caso não exista um BANCO de dados ele cria um vazio, e caso exista não faz nada
     void existe(){
-        if((system("cd banco")) != 0){
-            system("mkdir banco");
+        if((system("cd BANCO")) != 0){
+            system("mkdir BANCO");
             introducao();
         }
-        strcat(caminho,"banco");
+        strcat(caminho,"BANCO");
     }
 
     /* a função abaixo confere a cada jogada se alguem ganhou, retornando -1 se o computador perder
@@ -272,13 +265,16 @@ private:
         return 0;
     }
 
-    //essa função irá checar no banco se a posição que está tentando ser preenchida não leva a uma derrota
-    bool confereBanco() {
+    //essa função irá checar no BANCO se a posição que está tentando ser preenchida não leva a uma derrota
+    bool confereBANCO() {
         int i = 0, j = 0, c = 0;
+        cout<<caminho<<endl;
+        char ver;
         for (i = 0; caminho[i] != 0; i++) {
-
+                ver = caminho[i];
         }
         for (j; j < i; j++) {
+            ver = caminho[j];
             if (j >= (i - 2)) {
                 if (caminho[j] >= 'a' && caminho[j] <= 'z') {
                     return true;
@@ -295,7 +291,7 @@ private:
      * 1 = computador jogou uma letra invalida
      * 2 = jogador jogou uma letra invalida
      * 0 = ok
-     * 5 = de acordo com o banco essa jogada fará perder
+     * 5 = de acordo com o BANCO essa jogada fará perder
      */
     int popula(char po, int jogador) {
         if (po >= 'a' && po <= 'z') {
@@ -318,7 +314,7 @@ private:
                             return -2;
                         } else {
                             if(jogador == 1){
-                                if(confereBanco()){
+                                if(confereBANCO()){
                                     return 5;
                                 }
                                 else {
